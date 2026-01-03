@@ -21,15 +21,15 @@ trap ctrl_c INT
 
 # Funcion para el panel de ayuda
 function helpPanel () {
-  echo -e "\n${yellowColour}[+]${endColour} ${grayColour}Uso:${endColour}\n"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}m)${endColour} Busca por nombre de maquinas"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}h)${endColour} Mostrar panel de ayuda"
+  echo -e "\n${yellowColour}[+]${endColour} ${grayColour}Para el correcto uso del script puedes proporcinar estos parametros:${endColour}\n"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-m <nombre>\t${endColour} ${grayColour}Busca por nombre de maquinas en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-h\t\t${endColour} ${grayColour}Mostrar panel de ayuda${endColour}\n"
 }
 
 # Funcion para buscar maquinas
 function searchMachine () {
   machine="$1"
-  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina:${endColour} ${yellowColour}$machine${endColour}"
+  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina:${endColour} ${yellowColour}$machine${endColour}\n"
 }
 
 # Indicador de parametros
