@@ -21,13 +21,15 @@ trap ctrl_c INT
 
 # Funcion para el panel de ayuda
 function helpPanel () {
-  echo -e "\n[+] Uso:"
+  echo -e "\n${yellowColour}[+]${endColour} ${grayColour}Uso:${endColour}\n"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}m)${endColour} Busca por nombre de maquinas"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}h)${endColour} Mostrar panel de ayuda"
 }
 
 # Funcion para buscar maquinas
 function searchMachine () {
   machine="$1"
-  echo -e "\n[+] Buscando maquina: $machine"
+  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina:${endColour} ${yellowColour}$machine${endColour}"
 }
 
 # Indicador de parametros
