@@ -34,15 +34,15 @@ function searchMachine () {
 declare -i parameter_counter=0
 
 # Asignacion de parametros
-while getopts "m:h" arg in; do
+while getopts "m:h" arg; do
   case $arg in
     m) machineName=$OPTARG; let parameter_counter+=1;;
-    h) helpPanel;;
+    h) ;;
   esac
 done
 
 # Condicional para los parametros
-if [ $parameter_counter == 1 ]; then
+if [ $parameter_counter -eq 1 ]; then
   searchMachine $machineName
 else
   helpPanel
