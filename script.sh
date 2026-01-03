@@ -11,21 +11,21 @@ turquoiseColour="\e[0;36m\033[1m"
 grayColour="\e[0;37m\033[1m"
 
 # Funcion de salida Ctrl + C
-function ctrl_c() {
+function ctrl_c () {
   echo -e "\n\n${redColour}[i] Saliendo...${endColour}\n"
-  tput cnorm; exit 1
+  exit 1
 }
 
 # Crtl + C 
 trap ctrl_c INT
 
 # Funcion para el panel de ayuda
-function helpPanel() {
+function helpPanel () {
   echo -e "\n[+] Uso:"
 }
 
 # Funcion para buscar maquinas
-function searchMachine() {
+function searchMachine () {
   machine="$1"
   echo -e "\n[+] Buscando maquina: $machine"
 }
