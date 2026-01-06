@@ -29,17 +29,13 @@ main_url="https://htbmachines.github.io/bundle.js"
 # Funcion para el panel de ayuda
 function helpPanel () {
   echo -e "\n${yellowColour}[+]${endColour} ${grayColour}Para el correcto uso del script puedes proporcinar estos parametros:${endColour}\n"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-m <nombre>\t${endColour} ${grayColour}Busca por nombre de maquinas en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-u\t\t${endColour} ${grayColour}Actualiza archivos locales de busqueda desde [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-h\t\t${endColour} ${grayColour}Mostrar panel de ayuda${endColour}\n"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-h\t\t\t${endColour} ${grayColour}Mostrar panel de ayuda${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-u\t\t\t${endColour} ${grayColour}Actualiza archivos locales de busqueda desde [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-m <nombre>\t\t${endColour} ${grayColour}Busca por nombre de maquinas en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-i <direccion-ip>\t${endColour} ${grayColour}Busca por direccion IP de maquinas en [https://htbmachines.github.io/]${endColour}\n"
 }
 
-# Funcion para buscar maquinas
-function searchMachine () {
-  machine="$1"
-  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina:${endColour} ${yellowColour}$machine${endColour}\n"
-}
-
+# Funcion de actualizacion 
 function updateFiles () {
   tput civis
   echo -e "\n${greenColour}[+]${endColour} ${grayColour}Actualizando base de archivos...${endColour}\n"
@@ -70,23 +66,43 @@ function updateFiles () {
   tput cnorm
 }
 
+# Funcion para buscar maquinas por nombre
+function searchMachine () {
+  machine="$1"
+  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina:${endColour} ${yellowColour}$machine${endColour}\n"
+  cat bundle.js |awk "/name: \"$machine\"/,/resuelta:/" |grep -Ev "id:|sku:|resuelta:" |tr -d '"' |tr -d ',' |sed 's/^ *//'
+  echo -e ""
+}
+
+# Funcion para buscar maquinas por direccion IP
+function searchIpAddress () {
+  ipAdress=$1
+  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina con IP:${endColour} ${greenColour}$ipAdress${endColour}"
+  machineName="$(cat bundle.js |grep "ip: \"$ipAdress\"" -B 3 |grep "name" |awk 'NF{print $NF}' |tr -d '",')"
+  echo -e "${greenColour}[+]${endColour} ${grayColour}Maqina con nombre:${endColour} ${greenColour}$machineName${endColour}"
+  searchMachine $machineName
+}
+
 # Indicador de parametros
 declare -i parameter_counter=0
 
 # Asignacion de parametros
-while getopts "m:uh" arg; do
+while getopts "m:ui:h" arg; do
   case $arg in
-    m) machineName=$OPTARG; let parameter_counter+=1;;
-    u) let parameter_counter+=2;;
     h) ;;
+    u) let parameter_counter+=1;;
+    m) machineName=$OPTARG; let parameter_counter+=2;;
+    i) ipAdress=$OPTARG; let parameter_counter+=3;;
   esac
 done
 
 # Condicional para los parametros
 if [ $parameter_counter -eq 1 ]; then
-  searchMachine $machineName
+  updateFiles
 elif [ $parameter_counter -eq 2 ]; then
-  updateFiles 
+  searchMachine $machineName
+elif [ $parameter_counter -eq 3 ]; then
+  searchIpAddress $ipAdress
 else
   helpPanel
 fi
