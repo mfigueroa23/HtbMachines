@@ -34,7 +34,8 @@ function helpPanel () {
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-m <nombre>\t\t${endColour} ${grayColour}Busca por nombre de maquinas en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-i <direccion-ip>\t${endColour} ${grayColour}Busca por direccion IP de maquinas en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-y <nombre>\t\t${endColour} ${grayColour}Busca por nombre la resolucion de la maquina en YouTube en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-d <1-4>\t\t${endColour} ${grayColour}Busca por dificultad (1: Facíl | 2: Media | 3: Difícil | 4: Insane ) en [https://htbmachines.github.io/]${endColour}\n"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-d <1-4>\t\t${endColour} ${grayColour}Busca por dificultad ( 1: Fácil | 2: Media | 3: Difícil | 4: Insane ) en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-s <1-2>\t\t${endColour} ${grayColour}Busca por sistema operativo ( 1: Linux | 2: Windows ) en [https://htbmachines.github.io/]${endColour}\n"
 }
 
 # Funcion de actualizacion 
@@ -134,11 +135,29 @@ function searchMachineByDifficulty () {
   fi
 }
 
+# Funcion para buscar nombres de maquinas por sistema operativo
+function searchMachineByOperatingSystem () {
+  operatingSystem=$1
+  if [ $operatingSystem -eq 1 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas por sistema operativo${endColour} ${yellowColour}Linux${endColour}\n"
+    cat bundle.js |grep 'so: "Linux"' -B 4 |grep 'name: ' |tr -s 's/ *//' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $operatingSystem -eq 2 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas por sistema operativo${endColour} ${yellowColour}Windows${endColour}\n"
+    cat bundle.js |grep 'so: "Windows"' -B 4 |grep 'name: ' |tr -s 's/ *//' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  else
+    echo -e "\n${redColour}[!]${endColour} ${yellowColour}Opción Inválida.${endColour} ${grayColour}Los argumentos aceptados son:${endColour}\n"
+    echo -e "\t${greenColour}1${endColour}${grayColour}: Sistemas Linux${endColour}"
+    echo -e "\t${greenColour}2${endColour}${grayColour}: Sistemas Windows${endColour}"
+  fi
+}
+
 # Indicador de parametros
 declare -i parameter_counter=0
 
 # Asignacion de parametros
-while getopts "m:ui:y:d:h" arg; do
+while getopts "m:ui:y:d:s:h" arg; do
   case $arg in
     h) ;;
     u) let parameter_counter+=1;;
@@ -146,6 +165,7 @@ while getopts "m:ui:y:d:h" arg; do
     i) ipAddress=$OPTARG; let parameter_counter+=3;;
     y) machineName=$OPTARG; let parameter_counter+=4;;
     d) difficulty=$OPTARG; let parameter_counter+=5;;
+    s) operatingSystem=$OPTARG; let parameter_counter+=6;;
   esac
 done
 
@@ -160,6 +180,8 @@ elif [ $parameter_counter -eq 4 ]; then
   searchYouTubeVideo $machineName
 elif [ $parameter_counter -eq 5 ]; then
   searchMachineByDifficulty $difficulty
+elif [ $parameter_counter -eq 6 ]; then
+  searchMachineByOperatingSystem $operatingSystem
 else
   helpPanel
 fi
