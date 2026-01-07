@@ -69,19 +69,28 @@ function updateFiles () {
 
 # Funcion para buscar maquinas por nombre
 function searchMachine () {
-  machine="$1"
-  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina:${endColour} ${yellowColour}$machine${endColour}\n"
-  cat bundle.js |awk "/name: \"$machine\"/,/resuelta:/" |grep -Ev "id:|sku:|resuelta:" |tr -d '"' |tr -d ',' |sed 's/^ *//'
+  machineName="$1"
+  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina:${endColour} ${yellowColour}$machineName${endColour}\n"
+  machine=$(cat bundle.js |awk "/name: \"$machineName\"/,/resuelta:/" |grep -Ev "id:|sku:|resuelta:" |tr -d '"' |tr -d ',' |sed 's/^ *//')
+  if [ $machine ]; then
+    cat bundle.js |awk "/name: \"$machineName\"/,/resuelta:/" |grep -Ev "id:|sku:|resuelta:" |tr -d '"' |tr -d ',' |sed 's/^ *//'
+  else
+    echo -e "${redColour}[-]${endColour} ${grayColour}La maquina${endColour} ${greenColour}$machineName${endColour} ${grayColour}no existe en la base de datos${endColour}"
+  fi
   echo -e ""
 }
 
 # Funcion para buscar maquinas por direccion IP
 function searchIpAddress () {
-  ipAdress=$1
+  ipAddress=$1
   echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina con IP:${endColour} ${greenColour}$ipAdress${endColour}"
   machineName="$(cat bundle.js |grep "ip: \"$ipAdress\"" -B 3 |grep "name" |awk 'NF{print $NF}' |tr -d '",')"
-  echo -e "${greenColour}[+]${endColour} ${grayColour}Maqina con nombre:${endColour} ${greenColour}$machineName${endColour}"
-  searchMachine $machineName
+  if [ $machineName ]; then
+    echo -e "${greenColour}[+]${endColour} ${grayColour}Maqina con nombre:${endColour} ${greenColour}$machineName${endColour}"
+    searchMachine $machineName
+  else
+    echo -e "${redColour}[-]${endColour} ${grayColour}La maquina con IP${endColour} ${greenColour}$ipAddress${endColour} ${grayColour}no existe en la base de datos${endColour}\n"
+  fi
 }
 
 # Funcion para ver el link de youtube de una Maquina 
@@ -89,7 +98,11 @@ function searchYouTubeVideo () {
   machineName="$1"
   echo -e "\n${greenColour}[+]${endColour} ${grayColour}Obteniendo link de YouTube de la maquina ${yellowColour}$machineName${endColour} ${grayColour}resuelta.${endColour}"
   youtubeLink="$(cat bundle.js |awk "/name: \"$machineName\"/,/resuelta:/" |grep -Ev "id:|sku:|resuelta:" |tr -d '"' |tr -d ',' |sed 's/^ *//' |grep youtube |awk 'NF {print $NF}')"
-  echo -e "${greenColour}[+]${endColour} ${grayColour}Link de YouTube:${endColour} ${greenColour}$youtubeLink${endColour}\n"
+  if [ $youtubeLink ]; then
+    echo -e "${greenColour}[+]${endColour} ${grayColour}Link de YouTube:${endColour} ${greenColour}$youtubeLink${endColour}\n"
+  else
+    echo -e "${redColour}[-]${endColour} ${grayColour}La maquina${endColour} ${greenColour}$machineName${endColour} ${grayColour}no existe en la base de datos${endColour}\n"
+  fi
 }
 
 # Indicador de parametros
