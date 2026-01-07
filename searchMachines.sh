@@ -33,7 +33,8 @@ function helpPanel () {
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-u\t\t\t${endColour} ${grayColour}Actualiza archivos locales de busqueda desde [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-m <nombre>\t\t${endColour} ${grayColour}Busca por nombre de maquinas en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-i <direccion-ip>\t${endColour} ${grayColour}Busca por direccion IP de maquinas en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-y <nombre>\t\t${endColour} ${grayColour}Busca por nombre la resolucion de la maquina en YouTube en [https://htbmachines.github.io/]${endColour}\n"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-y <nombre>\t\t${endColour} ${grayColour}Busca por nombre la resolucion de la maquina en YouTube en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-y <1-4>\t\t${endColour} ${grayColour}Busca por dificultad (1: Facíl | 2: Media | 3: Difícil | 4: Insane ) en [https://htbmachines.github.io/]${endColour}\n"
 }
 
 # Funcion de actualizacion 
@@ -105,17 +106,46 @@ function searchYouTubeVideo () {
   fi
 }
 
+# Funcion para buscar nombres de maquina por dificultad
+function searchMachineByDifficulty () {
+  difficulty=$1
+  if [ $difficulty -eq 1 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas con dificultad${endColour} ${greenColour}Fácil${endColour}\n"
+    cat bundle.js |grep 'dificultad: "Fácil"' -B 5 |grep 'name: ' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 2 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas con dificultad${endColour} ${greenColour}Media${endColour}\n"
+    cat bundle.js |grep 'dificultad: "Media"' -B 5 |grep 'name: ' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 3 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas con dificultad${endColour} ${greenColour}Difícil${endColour}\n"
+    cat bundle.js |grep 'dificultad: "Difícil"' -B 5 |grep 'name: ' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 4 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas con dificultad${endColour} ${greenColour}Insane${endColour}\n"
+    cat bundle.js |grep 'dificultad: "Insane"' -B 5 |grep 'name: ' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  else
+    echo -e "\n${redColour}[!]${endColour} ${grayColour}Opción inválida. Las opciones permitidas son:${endColour}\n"
+    echo -e "\t${greenColour}1${endColour}${grayColour}: Maquinas faciles${endColour}"
+    echo -e "\t${greenColour}2${endColour}${grayColour}: Maquinas medias${endColour}"
+    echo -e "\t${greenColour}3${endColour}${grayColour}: Maquinas dificiles${endColour}"
+    echo -e "\t${greenColour}4${endColour}${grayColour}: Maquinas insane${endColour}\n"
+  fi
+}
+
 # Indicador de parametros
 declare -i parameter_counter=0
 
 # Asignacion de parametros
-while getopts "m:ui:y:h" arg; do
+while getopts "m:ui:y:d:h" arg; do
   case $arg in
     h) ;;
     u) let parameter_counter+=1;;
     m) machineName=$OPTARG; let parameter_counter+=2;;
     i) ipAddress=$OPTARG; let parameter_counter+=3;;
     y) machineName=$OPTARG; let parameter_counter+=4;;
+    d) difficulty=$OPTARG; let parameter_counter+=5;;
   esac
 done
 
@@ -128,6 +158,8 @@ elif [ $parameter_counter -eq 3 ]; then
   searchIpAddress $ipAddress
 elif [ $parameter_counter -eq 4 ]; then
   searchYouTubeVideo $machineName
+elif [ $parameter_counter -eq 5 ]; then
+  searchMachineByDifficulty $difficulty
 else
   helpPanel
 fi
