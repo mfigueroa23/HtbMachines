@@ -34,7 +34,7 @@ function helpPanel () {
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-m <nombre>\t\t${endColour} ${grayColour}Busca por nombre de maquinas en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-i <direccion-ip>\t${endColour} ${grayColour}Busca por direccion IP de maquinas en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-y <nombre>\t\t${endColour} ${grayColour}Busca por nombre la resolucion de la maquina en YouTube en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-y <1-4>\t\t${endColour} ${grayColour}Busca por dificultad (1: Facíl | 2: Media | 3: Difícil | 4: Insane ) en [https://htbmachines.github.io/]${endColour}\n"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-d <1-4>\t\t${endColour} ${grayColour}Busca por dificultad (1: Facíl | 2: Media | 3: Difícil | 4: Insane ) en [https://htbmachines.github.io/]${endColour}\n"
 }
 
 # Funcion de actualizacion 
