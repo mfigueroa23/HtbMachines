@@ -31,11 +31,12 @@ function helpPanel () {
   echo -e "\n${yellowColour}[+]${endColour} ${grayColour}Para el correcto uso del script puedes proporcinar estos parametros:${endColour}\n"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-h\t\t\t${endColour} ${grayColour}Mostrar panel de ayuda${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-u\t\t\t${endColour} ${grayColour}Actualiza archivos locales de busqueda desde [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-m <nombre>\t\t${endColour} ${grayColour}Busca por nombre de maquinas en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-i <direccion-ip>\t${endColour} ${grayColour}Busca por direccion IP de maquinas en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-y <nombre>\t\t${endColour} ${grayColour}Busca por nombre la resolucion de la maquina en YouTube en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-d <1-4>\t\t${endColour} ${grayColour}Busca por dificultad ( 1: Fácil | 2: Media | 3: Difícil | 4: Insane ) en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-s <1-2>\t\t${endColour} ${grayColour}Busca por sistema operativo ( 1: Linux | 2: Windows ) en [https://htbmachines.github.io/]${endColour}\n"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-m${endColour} ${blueColour}<nombre>\t\t${endColour} ${grayColour}Busca por nombre de maquinas en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-i${endColour} ${blueColour}<direccion-ip>\t${endColour} ${grayColour}Busca por direccion IP de maquinas en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-y${endColour} ${blueColour}<nombre>\t\t${endColour} ${grayColour}Busca por nombre la resolucion de la maquina en YouTube en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-d${endColour} ${blueColour}<1-4>\t\t${endColour} ${grayColour}Busca por dificultad ( 1: Fácil | 2: Media | 3: Difícil | 4: Insane ) en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-s${endColour} ${blueColour}<1-2>\t\t${endColour} ${grayColour}Busca por sistema operativo ( 1: Linux | 2: Windows ) en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-d${endColour} ${blueColour}<1-4>${endColour} ${redColour}-s${endColour} ${blueColour}<1-2>\t${endColour} ${grayColour}Busca por dificultad y sistema operativo en [https://htbmachines.github.io/]${endColour}\n"
 }
 
 # Funcion de actualizacion 
@@ -153,8 +154,59 @@ function searchMachineByOperatingSystem () {
   fi
 }
 
+# Funcion para buscar nombres de maquinas por dificultad y sistema operativo
+function searchMachineByDifficultyAndOperatingSystem () {
+  difficulty=$1
+  operatingSystem=$2
+  if [ $difficulty -eq 1 ] && [ $operatingSystem -eq 1 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas${endColour} ${yellowColour}linux${endColour} ${grayColour}con dificultad${endColour} ${yellowColour}fácil${endColour}\n"
+    cat bundle.js |grep 'so: "Linux"' -B 4 -A 1 |grep 'dificultad: "Fácil"' -B 5 |grep "name:" |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 2 ] && [ $operatingSystem -eq 1 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas${endColour} ${yellowColour}linux${endColour} ${grayColour}con dificultad${endColour} ${yellowColour}media${endColour}\n"
+    cat bundle.js |grep 'so: "Linux"' -B 4 -A 1 |grep 'dificultad: "Media"' -B 5 |grep "name:" |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 3 ] && [ $operatingSystem -eq 1 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas${endColour} ${yellowColour}linux${endColour} ${grayColour}con dificultad${endColour} ${yellowColour}difícil${endColour}\n"
+    cat bundle.js |grep 'so: "Linux"' -B 4 -A 1 |grep 'dificultad: "Difícil"' -B 5 |grep "name:" |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 4 ] && [ $operatingSystem -eq 1 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas${endColour} ${yellowColour}linux${endColour} ${grayColour}con dificultad${endColour} ${yellowColour}insane${endColour}\n"
+    cat bundle.js |grep 'so: "Linux"' -B 4 -A 1 |grep 'dificultad: "Insane"' -B 5 |grep "name:" |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 1 ] && [ $operatingSystem -eq 2 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas${endColour} ${yellowColour}windows${endColour} ${grayColour}con dificultad${endColour} ${yellowColour}fácil${endColour}\n"
+    cat bundle.js |grep 'so: "Windows"' -B 4 -A 1 |grep 'dificultad: "Fácil"' -B 5 |grep "name:" |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 2 ] && [ $operatingSystem -eq 2 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas${endColour} ${yellowColour}windows${endColour} ${grayColour}con dificultad${endColour} ${yellowColour}media${endColour}\n"
+    cat bundle.js |grep 'so: "Windows"' -B 4 -A 1 |grep 'dificultad: "Media"' -B 5 |grep "name:" |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 3 ] && [ $operatingSystem -eq 2 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas${endColour} ${yellowColour}windows${endColour} ${grayColour}con dificultad${endColour} ${yellowColour}difícil${endColour}\n"
+    cat bundle.js |grep 'so: "Windows"' -B 4 -A 1 |grep 'dificultad: "Difícil"' -B 5 |grep "name:" |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $difficulty -eq 4 ] && [ $operatingSystem -eq 2 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas${endColour} ${yellowColour}windows${endColour} ${grayColour}con dificultad${endColour} ${yellowColour}insane${endColour}\n"
+    cat bundle.js |grep 'so: "Windows"' -B 4 -A 1 |grep 'dificultad: "Insane"' -B 5 |grep "name:" |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  else
+    echo -e "\n${redColour}[!]${endColour} ${yellowColour}Opción Inválida.${endColour} ${grayColour}Los argumentos aceptados son:${endColour}\n"
+    echo -e "\t${yellowColour}[i]${endColour} ${greenColour}-d${endColour}"
+    echo -e "\t\t${greenColour}1${endColour}${grayColour}: Maquinas faciles${endColour}"
+    echo -e "\t\t${greenColour}2${endColour}${grayColour}: Maquinas medias${endColour}"
+    echo -e "\t\t${greenColour}3${endColour}${grayColour}: Maquinas dificiles${endColour}"
+    echo -e "\t\t${greenColour}4${endColour}${grayColour}: Maquinas insane${endColour}\n"
+    echo -e "\t${yellowColour}[i]${endColour} ${greenColour}-s${endColour}\n"
+    echo -e "\t\t${greenColour}1${endColour}${grayColour}: Sistemas Linux${endColour}"
+    echo -e "\t\t${greenColour}2${endColour}${grayColour}: Sistemas Windows${endColour}\n"
+  fi
+}
+
 # Indicador de parametros
 declare -i parameter_counter=0
+declare -i parameter_difficulty=0
+declare -i parameter_operatingSystem=0
 
 # Asignacion de parametros
 while getopts "m:ui:y:d:s:h" arg; do
@@ -164,8 +216,8 @@ while getopts "m:ui:y:d:s:h" arg; do
     m) machineName=$OPTARG; let parameter_counter+=2;;
     i) ipAddress=$OPTARG; let parameter_counter+=3;;
     y) machineName=$OPTARG; let parameter_counter+=4;;
-    d) difficulty=$OPTARG; let parameter_counter+=5;;
-    s) operatingSystem=$OPTARG; let parameter_counter+=6;;
+    d) difficulty=$OPTARG; parameter_difficulty=1; let parameter_counter+=5;;
+    s) operatingSystem=$OPTARG; parameter_operatingSystem=1; let parameter_counter+=6;;
   esac
 done
 
@@ -182,6 +234,8 @@ elif [ $parameter_counter -eq 5 ]; then
   searchMachineByDifficulty $difficulty
 elif [ $parameter_counter -eq 6 ]; then
   searchMachineByOperatingSystem $operatingSystem
+elif [ $parameter_difficulty -eq 1 ] && [ $parameter_operatingSystem -eq 1 ]; then
+  searchMachineByDifficultyAndOperatingSystem $difficulty $operatingSystem
 else
   helpPanel
 fi
