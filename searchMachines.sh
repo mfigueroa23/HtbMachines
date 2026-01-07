@@ -32,7 +32,8 @@ function helpPanel () {
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-h\t\t\t${endColour} ${grayColour}Mostrar panel de ayuda${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-u\t\t\t${endColour} ${grayColour}Actualiza archivos locales de busqueda desde [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-m <nombre>\t\t${endColour} ${grayColour}Busca por nombre de maquinas en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-i <direccion-ip>\t${endColour} ${grayColour}Busca por direccion IP de maquinas en [https://htbmachines.github.io/]${endColour}\n"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-i <direccion-ip>\t${endColour} ${grayColour}Busca por direccion IP de maquinas en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-y <nombre>\t\t${endColour} ${grayColour}Busca por nombre la resolucion de la maquina en YouTube en [https://htbmachines.github.io/]${endColour}\n"
 }
 
 # Funcion de actualizacion 
@@ -83,16 +84,25 @@ function searchIpAddress () {
   searchMachine $machineName
 }
 
+# Funcion para ver el link de youtube de una Maquina 
+function searchYouTubeVideo () {
+  machineName="$1"
+  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Obteniendo link de YouTube de la maquina ${yellowColour}$machineName${endColour} ${grayColour}resuelta.${endColour}"
+  youtubeLink="$(cat bundle.js |awk "/name: \"$machineName\"/,/resuelta:/" |grep -Ev "id:|sku:|resuelta:" |tr -d '"' |tr -d ',' |sed 's/^ *//' |grep youtube |awk 'NF {print $NF}')"
+  echo -e "${greenColour}[+]${endColour} ${grayColour}Link de YouTube:${endColour} ${greenColour}$youtubeLink${endColour}\n"
+}
+
 # Indicador de parametros
 declare -i parameter_counter=0
 
 # Asignacion de parametros
-while getopts "m:ui:h" arg; do
+while getopts "m:ui:y:h" arg; do
   case $arg in
     h) ;;
     u) let parameter_counter+=1;;
     m) machineName=$OPTARG; let parameter_counter+=2;;
     i) ipAdress=$OPTARG; let parameter_counter+=3;;
+    y) machineName=$OPTARG; let parameter_counter+=4;;
   esac
 done
 
@@ -103,6 +113,8 @@ elif [ $parameter_counter -eq 2 ]; then
   searchMachine $machineName
 elif [ $parameter_counter -eq 3 ]; then
   searchIpAddress $ipAdress
+elif [ $parameter_counter -eq 4 ]; then
+  searchYouTubeVideo $machineName
 else
   helpPanel
 fi
