@@ -83,8 +83,8 @@ function searchMachine () {
 # Funcion para buscar maquinas por direccion IP
 function searchIpAddress () {
   ipAddress=$1
-  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina con IP:${endColour} ${greenColour}$ipAdress${endColour}"
-  machineName="$(cat bundle.js |grep "ip: \"$ipAdress\"" -B 3 |grep "name" |awk 'NF{print $NF}' |tr -d '",')"
+  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina con IP:${endColour} ${greenColour}$ipAddress${endColour}"
+  machineName="$(cat bundle.js |grep "ip: \"$ipAddress\"" -B 3 |grep "name" |awk 'NF{print $NF}' |tr -d '",')"
   if [ $machineName ]; then
     echo -e "${greenColour}[+]${endColour} ${grayColour}Maqina con nombre:${endColour} ${greenColour}$machineName${endColour}"
     searchMachine $machineName
@@ -114,7 +114,7 @@ while getopts "m:ui:y:h" arg; do
     h) ;;
     u) let parameter_counter+=1;;
     m) machineName=$OPTARG; let parameter_counter+=2;;
-    i) ipAdress=$OPTARG; let parameter_counter+=3;;
+    i) ipAddress=$OPTARG; let parameter_counter+=3;;
     y) machineName=$OPTARG; let parameter_counter+=4;;
   esac
 done
@@ -125,7 +125,7 @@ if [ $parameter_counter -eq 1 ]; then
 elif [ $parameter_counter -eq 2 ]; then
   searchMachine $machineName
 elif [ $parameter_counter -eq 3 ]; then
-  searchIpAddress $ipAdress
+  searchIpAddress $ipAddress
 elif [ $parameter_counter -eq 4 ]; then
   searchYouTubeVideo $machineName
 else
