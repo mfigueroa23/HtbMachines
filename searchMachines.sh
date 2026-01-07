@@ -36,7 +36,7 @@ function helpPanel () {
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-y${endColour} ${blueColour}<nombre>\t\t${endColour} ${grayColour}Busca por nombre la resolucion de la maquina en YouTube en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-d${endColour} ${blueColour}<1-4>\t\t${endColour} ${grayColour}Busca por dificultad ( 1: Fácil | 2: Media | 3: Difícil | 4: Insane ) en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-s${endColour} ${blueColour}<1-2>\t\t${endColour} ${grayColour}Busca por sistema operativo ( 1: Linux | 2: Windows ) en [https://htbmachines.github.io/]${endColour}"
-  echo -e "\t${blueColour}[i]${endColour} ${redColour}-d${endColour} ${blueColour}<1-4>${endColour} ${redColour}-s${endColour} ${blueColour}<1-2>\t${endColour} ${grayColour}Busca por dificultad y sistema operativo en [https://htbmachines.github.io/]${endColour}\n"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-c${endColour} ${blueColour}<1-11>\t\t${endColour} ${grayColour}Busca por certificaciones ( utilizar '0' para saber mas ) en [https://htbmachines.github.io/]${endColour}\n"
 }
 
 # Funcion de actualizacion 
@@ -203,13 +203,89 @@ function searchMachineByDifficultyAndOperatingSystem () {
   fi
 }
 
+# Funcion para buscar maquinas por certificaciones
+function searchMachineByCertification () {
+  certification="$1"
+  if [ $certification -eq 1 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}eCPPTv2${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'eCPPTv2' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 2 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}eCPTXv2${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'eCPTXv2' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 3 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}eJPT${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'eJPT' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 4 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}eWPT${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'eWPT' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 5 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}eWPTXv2${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'eWPTXv2' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 6 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}OSCP${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'OSCP' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 7 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}OSWE${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'OSWE' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 8 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}OSEP${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'OSEP' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 9 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}OSED${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'OSED' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 10 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}Active Directory${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'Active Directory' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 11 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquina que contengan parecido con la certificacion${endColour} ${yellowColour}Buffer Overflow${endColour}\n"
+    cat bundle.js |grep 'like: ' -B 7 |grep 'Buffer Overflow' -C 7 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  elif [ $certification -eq 0 ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Los argumentos aceptados son:${endColour}\n"
+    echo -e "\t${greenColour}1${endColour}${grayColour}:${endColour} ${yellowColour}eCPPTv2${endColour}"
+    echo -e "\t${greenColour}2${endColour}${grayColour}:${endColour} ${yellowColour}eCPTXv2${endColour}"
+    echo -e "\t${greenColour}3${endColour}${grayColour}:${endColour} ${yellowColour}eJPT${endColour}"
+    echo -e "\t${greenColour}4${endColour}${grayColour}:${endColour} ${yellowColour}eWPT${endColour}"
+    echo -e "\t${greenColour}5${endColour}${grayColour}:${endColour} ${yellowColour}eWPTXv2${endColour}"
+    echo -e "\t${greenColour}6${endColour}${grayColour}:${endColour} ${yellowColour}OSCP${endColour}"
+    echo -e "\t${greenColour}7${endColour}${grayColour}:${endColour} ${yellowColour}OSWE${endColour}"
+    echo -e "\t${greenColour}8${endColour}${grayColour}:${endColour} ${yellowColour}OSEP${endColour}"
+    echo -e "\t${greenColour}9${endColour}${grayColour}:${endColour} ${yellowColour}OSED${endColour}"
+    echo -e "\t${greenColour}10${endColour}${grayColour}:${endColour} ${yellowColour}Active Directory${endColour}"
+    echo -e "\t${greenColour}11${endColour}${grayColour}:${endColour} ${yellowColour}Buffer Overflow${endColour}\n"
+  else
+    echo -e "\n${redColour}[!] Opción invalida.${endColour} ${grayColour}Los argumentos aceptados son:${endColour}\n"
+    echo -e "\t${greenColour}1${endColour}${grayColour}:${endColour} ${yellowColour}eCPPTv2${endColour}"
+    echo -e "\t${greenColour}2${endColour}${grayColour}:${endColour} ${yellowColour}eCPTXv2${endColour}"
+    echo -e "\t${greenColour}3${endColour}${grayColour}:${endColour} ${yellowColour}eJPT${endColour}"
+    echo -e "\t${greenColour}4${endColour}${grayColour}:${endColour} ${yellowColour}eWPT${endColour}"
+    echo -e "\t${greenColour}5${endColour}${grayColour}:${endColour} ${yellowColour}eWPTXv2${endColour}"
+    echo -e "\t${greenColour}6${endColour}${grayColour}:${endColour} ${yellowColour}OSCP${endColour}"
+    echo -e "\t${greenColour}7${endColour}${grayColour}:${endColour} ${yellowColour}OSWE${endColour}"
+    echo -e "\t${greenColour}8${endColour}${grayColour}:${endColour} ${yellowColour}OSEP${endColour}"
+    echo -e "\t${greenColour}9${endColour}${grayColour}:${endColour} ${yellowColour}OSED${endColour}"
+    echo -e "\t${greenColour}10${endColour}${grayColour}:${endColour} ${yellowColour}Active Directory${endColour}"
+    echo -e "\t${greenColour}11${endColour}${grayColour}:${endColour} ${yellowColour}Buffer Overflow${endColour}\n"
+  fi
+}
+
 # Indicador de parametros
 declare -i parameter_counter=0
 declare -i parameter_difficulty=0
 declare -i parameter_operatingSystem=0
 
 # Asignacion de parametros
-while getopts "m:ui:y:d:s:h" arg; do
+while getopts "m:ui:y:d:s:c:h" arg; do
   case $arg in
     h) ;;
     u) let parameter_counter+=1;;
@@ -218,6 +294,7 @@ while getopts "m:ui:y:d:s:h" arg; do
     y) machineName=$OPTARG; let parameter_counter+=4;;
     d) difficulty=$OPTARG; parameter_difficulty=1; let parameter_counter+=5;;
     s) operatingSystem=$OPTARG; parameter_operatingSystem=1; let parameter_counter+=6;;
+    c) certification=$OPTARG; parameter_counter+=7;;
   esac
 done
 
@@ -234,6 +311,8 @@ elif [ $parameter_counter -eq 5 ]; then
   searchMachineByDifficulty $difficulty
 elif [ $parameter_counter -eq 6 ]; then
   searchMachineByOperatingSystem $operatingSystem
+elif [ $parameter_counter -eq 7 ]; then
+  searchMachineByCertification $certification
 elif [ $parameter_difficulty -eq 1 ] && [ $parameter_operatingSystem -eq 1 ]; then
   searchMachineByDifficultyAndOperatingSystem $difficulty $operatingSystem
 else
