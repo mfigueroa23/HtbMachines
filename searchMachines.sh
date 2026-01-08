@@ -36,6 +36,7 @@ function helpPanel () {
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-y${endColour} ${blueColour}<nombre>\t\t${endColour} ${grayColour}Busca por nombre la resolucion de la maquina en YouTube en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-d${endColour} ${blueColour}<1-4>\t\t${endColour} ${grayColour}Busca por dificultad ( 1: Fácil | 2: Media | 3: Difícil | 4: Insane ) en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-s${endColour} ${blueColour}<1-2>\t\t${endColour} ${grayColour}Busca por sistema operativo ( 1: Linux | 2: Windows ) en [https://htbmachines.github.io/]${endColour}"
+  echo -e "\t${blueColour}[i]${endColour} ${redColour}-k${endColour} ${blueColour}<skill>\t\t${endColour} ${grayColour}Busca por maquinas por skill en [https://htbmachines.github.io/]${endColour}"
   echo -e "\t${blueColour}[i]${endColour} ${redColour}-c${endColour} ${blueColour}<1-11>\t\t${endColour} ${grayColour}Busca por certificaciones ( utilizar '0' para saber mas ) en [https://htbmachines.github.io/]${endColour}\n"
 }
 
@@ -279,13 +280,27 @@ function searchMachineByCertification () {
   fi
 }
 
+# Funcion para buscar maquinas por skills
+function searchMachineBySkill () {
+  skill="$1"
+  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando maquinas con la skill${endColour} ${yellowColour}$skill${endColour}"
+  machine=$(cat bundle.js |grep "skills:" -B 6 |tr -s 's/ *//' |grep $skill -i -B 6 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column)
+  if [ $machine ]; then
+    echo ""
+    cat bundle.js |grep "skills:" -B 6 |tr -s 's/ *//' |grep $skill -i -B 6 |grep 'name:' |awk 'NF {print $NF}' |tr -d '",' |column
+    echo ""
+  else
+    echo -e "${redColour}[-]${endColour} ${grayColour}No se han encontrado maquinas con la skill${endColour} ${yellowColour}$skill${endColour}\n"
+  fi
+}
+
 # Indicador de parametros
 declare -i parameter_counter=0
 declare -i parameter_difficulty=0
 declare -i parameter_operatingSystem=0
 
 # Asignacion de parametros
-while getopts "m:ui:y:d:s:c:h" arg; do
+while getopts "m:ui:y:d:s:c:k:h" arg; do
   case $arg in
     h) ;;
     u) let parameter_counter+=1;;
@@ -294,7 +309,8 @@ while getopts "m:ui:y:d:s:c:h" arg; do
     y) machineName=$OPTARG; let parameter_counter+=4;;
     d) difficulty=$OPTARG; parameter_difficulty=1; let parameter_counter+=5;;
     s) operatingSystem=$OPTARG; parameter_operatingSystem=1; let parameter_counter+=6;;
-    c) certification=$OPTARG; parameter_counter+=7;;
+    c) certification=$OPTARG; let parameter_counter+=7;;
+    k) skill=$OPTARG; let parameter_counter+=8;;
   esac
 done
 
@@ -313,6 +329,8 @@ elif [ $parameter_counter -eq 6 ]; then
   searchMachineByOperatingSystem $operatingSystem
 elif [ $parameter_counter -eq 7 ]; then
   searchMachineByCertification $certification
+elif [ $parameter_counter -eq 8 ]; then
+  searchMachineBySkill "$skill"
 elif [ $parameter_difficulty -eq 1 ] && [ $parameter_operatingSystem -eq 1 ]; then
   searchMachineByDifficultyAndOperatingSystem $difficulty $operatingSystem
 else
